@@ -23,8 +23,8 @@ using namespace std;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------ Deklarationen -----------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
-uint16_t FG_x = 640;	//Fenstergröße x
-uint16_t FG_y = 480;	//Fenstergröße y
+uint16_t FG_x = 800;	//Fenstergröße x
+uint16_t FG_y = 1000;	//Fenstergröße y
 
 class GameWindow : public Gosu::Window {
 public:
@@ -36,7 +36,7 @@ public:
 		, background("background.jpg")
 		, alien("alien.png")
 	{
-		set_caption("Gosu Tutorial Game");
+		set_caption("Gosu Tutorial Game"); 
 	}
 
 	double mouse_x = 0.0;
