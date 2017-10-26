@@ -23,20 +23,18 @@ using namespace std;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------ Deklarationen -----------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
-uint16_t FG_x = 800;	//Fenstergröße x
+uint16_t FG_x = 750;	//Fenstergröße x
 uint16_t FG_y = 1000;	//Fenstergröße y
 
 class GameWindow : public Gosu::Window {
 public:
-	Gosu::Image background;
-	Gosu::Image alien;
+	Gosu::Image street;
 
 	GameWindow()
 		: Window(FG_x, FG_y)
-		, background("background.jpg")
-		, alien("alien.png")
+		, street("Bilder/street.png")
 	{
-		set_caption("Gosu Tutorial Game"); 
+		set_caption("Panzerspiel"); 
 	}
 
 	double mouse_x = 0.0;
@@ -63,11 +61,12 @@ public:
 	}
 
 	void draw() override {
-		background.draw_rot(320, 280, 0.0,
+		street.draw_rot(0, 0, 0.0,
 			0, // Rotationswinkel in Grad
-			0.5, 0.5 // Position der "Mitte" relativ zu x, y
+			0.0, 0.0 // Position der "Mitte" relativ zu x, y
 		);
-		
+
+		/*
 		alien.draw_rot(200, down1, 0.1,
 			rot, // Rotationswinkel in Grad
 			0.0, 0.0 // Position der "Mitte" relativ zu x, y
@@ -77,6 +76,8 @@ public:
 			rot, // Rotationswinkel in Grad
 			0.0, 0.0 // Position der "Mitte" relativ zu x, y
 		);
+		*/
+		
 
 		// Fadenkreuz
 		graphics().draw_line(
