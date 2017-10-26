@@ -39,16 +39,36 @@ public:
 		set_caption("Gosu Tutorial Game"); 
 	}
 
-	double mouse_x = 0.0;
-	double mouse_y = 0.0;
-	bool shoot = false;
-	uint16_t rot = 0;
+	struct Position_obj {
+		int16_t s = 3; //Spalte
+		int16_t x = 375; //eig. Koordinaten
+		int16_t y = 50;
+	};
 
-	int16_t down1 = 0;
-	int16_t down2 = -200;
+
+	Position_obj Player{ 3,375,50 };
+
 
 	void update() override {
-		mouse_x = input().mouse_x();
+
+		if (input().down(Gosu::KB_LEFT)) {
+			if (Player.s > 1) {
+				Player.s = Player.s - 1;
+				Player.x = Player.x - 75;
+			}
+		}
+
+		if (input().down(Gosu::KB_RIGHT)) {
+			if (Player.s < 5) {
+				Player.s = Player.s + 1;
+				Player.x = Player.x + 75;
+			}
+		}
+
+
+
+
+/*	    mouse_x = input().mouse_x();
 		mouse_y = input().mouse_y();
 		if (input().down(Gosu::MS_LEFT)) {			// linke Maustaste
 			shoot = true;
@@ -56,14 +76,20 @@ public:
 		else if (input().down(Gosu::MS_RIGHT)) {	// rechte Maustaste
 			
 		}
+		
+		
+
+
 
 		rot++;
 		down1 = (down1 + 1) % 480;
-		down2 = (down2 + 1) % 480;
+		down2 = (down2 + 1) % 480; */
 	}
 
 	void draw() override {
-		background.draw_rot(320, 280, 0.0,
+
+
+/*		background.draw_rot(320, 280, 0.0,
 			0, // Rotationswinkel in Grad
 			0.5, 0.5 // Position der "Mitte" relativ zu x, y
 		);
@@ -90,7 +116,7 @@ public:
 			0.1
 		);
 
-		/*
+	
 		graphics().draw_triangle(
 		20, 300, Gosu::Color::BLUE,
 		mouse_x, mouse_y, Gosu::Color::RED,
