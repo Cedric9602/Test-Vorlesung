@@ -29,10 +29,12 @@ uint16_t FG_y = 1000;	//Fenstergröße y
 class GameWindow : public Gosu::Window {
 public:
 	Gosu::Image street;
+	Gosu::Image player;
 
 	GameWindow()
 		: Window(FG_x, FG_y)
 		, street("Bilder/street.png")
+		, player("Bilder/Panzer.png")
 	{
 		set_caption("Panzerspiel"); 
 	}
@@ -40,54 +42,41 @@ public:
 	struct Position_obj {
 		int16_t s = 3; //Spalte
 		int16_t x = 375; //eig. Koordinaten
-		int16_t y = 50;
+		int16_t y = 900;
 	};
 
-
-	Position_obj Player{ 3,375,50 };
+	
+	
+	Position_obj Player;
 
 
 	void update() override {
-
+		
 		if (input().down(Gosu::KB_LEFT)) {
 			if (Player.s > 1) {
 				Player.s = Player.s - 1;
-				Player.x = Player.x - 75;
+				Player.x = Player.x - 75; //Abfrage auf pos. Flanke
 			}
 		}
 
 		if (input().down(Gosu::KB_RIGHT)) {
 			if (Player.s < 5) {
 				Player.s = Player.s + 1;
-				Player.x = Player.x + 75;
+				Player.x = Player.x + 75;  //Abfrage auf pos. Flanke
 			}
 		}
-
-
-
-
-/*	    mouse_x = input().mouse_x();
-		mouse_y = input().mouse_y();
-		if (input().down(Gosu::MS_LEFT)) {			// linke Maustaste
-			shoot = true;
-		}
-		else if (input().down(Gosu::MS_RIGHT)) {	// rechte Maustaste
-			
-		}
 		
-		
-
-
-
-		rot++;
-		down1 = (down1 + 1) % 480;
-		down2 = (down2 + 1) % 480; */
 	}
 
 	void draw() override {
 		street.draw_rot(0, 0, 0.0,
 			0, // Rotationswinkel in Grad
 			0.0, 0.0 // Position der "Mitte" relativ zu x, y
+		);
+
+		player.draw_rot(Player.x, Player.y, 0.1,
+			0, // Rotationswinkel in Grad
+			0.5, 0.5 // Position der "Mitte" relativ zu x, y
 		);
 
 		/*
@@ -99,40 +88,6 @@ public:
 		alien.draw_rot(500, down2, 0.1,
 			rot, // Rotationswinkel in Grad
 			0.0, 0.0 // Position der "Mitte" relativ zu x, y
-		);
-		*/
-		
-
-		// Fadenkreuz
-		graphics().draw_line(
-			mouse_x - 20, mouse_y, Gosu::Color::RED,
-			mouse_x + 20, mouse_y, Gosu::Color::RED,
-			0.1
-		);
-		graphics().draw_line(
-			mouse_x, mouse_y - 20, Gosu::Color::RED,
-			mouse_x, mouse_y + 20, Gosu::Color::RED,
-			0.1
-		);
-
-	
-		graphics().draw_triangle(
-		20, 300, Gosu::Color::BLUE,
-		mouse_x, mouse_y, Gosu::Color::RED,
-		300, 300, Gosu::Color::GREEN,
-		0.0
-		);
-
-		graphics().draw_line(
-			20, 20, Gosu::Color::RED,
-			200, 100, Gosu::Color::GREEN,
-			0.1
-		);
-
-		graphics().draw_line(
-			10, 100, Gosu::Color::RED,
-			200, 20, Gosu::Color::GREEN,
-			0.1
 		);
 		*/
 	}
