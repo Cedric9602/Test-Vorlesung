@@ -53,7 +53,7 @@ public:
 		if (input().down(Gosu::MS_LEFT)) {			// linke Maustaste
 			shoot = true;
 		}
-		if (input().down(Gosu::MS_RIGHT)) {	// rechte Maustaste
+		else if (input().down(Gosu::MS_RIGHT)) {	// rechte Maustaste
 			
 		}
 
@@ -63,9 +63,9 @@ public:
 	}
 
 	void draw() override {
-		background.draw_rot(0, 0, 0.0,
+		background.draw_rot(320, 280, 0.0,
 			0, // Rotationswinkel in Grad
-			0.0, 0.0 // Position der "Mitte" relativ zu x, y
+			0.5, 0.5 // Position der "Mitte" relativ zu x, y
 		);
 		
 		alien.draw_rot(200, down1, 0.1,
@@ -89,16 +89,27 @@ public:
 			mouse_x, mouse_y + 20, Gosu::Color::RED,
 			0.1
 		);
-		
-		
+
+		/*
 		graphics().draw_triangle(
-			mouse_x + 100 , mouse_y + 100, Gosu::Color::BLUE,
+		20, 300, Gosu::Color::BLUE,
 		mouse_x, mouse_y, Gosu::Color::RED,
-			mouse_x - 100, mouse_y + 100, Gosu::Color::GREEN,
-		0.2
+		300, 300, Gosu::Color::GREEN,
+		0.0
 		);
 
-		
+		graphics().draw_line(
+			20, 20, Gosu::Color::RED,
+			200, 100, Gosu::Color::GREEN,
+			0.1
+		);
+
+		graphics().draw_line(
+			10, 100, Gosu::Color::RED,
+			200, 20, Gosu::Color::GREEN,
+			0.1
+		);
+		*/
 	}
 };
 
