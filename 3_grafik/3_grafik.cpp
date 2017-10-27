@@ -44,27 +44,50 @@ public:
 		int16_t x = 375; //eig. Koordinaten
 		int16_t y = 900;
 	};
-
-	
 	
 	Position_obj Player;
+
+	struct enemy {
+
+	};
+
+	bool input_LEFT_up = false;
+	bool input_RIGHT_up = false;
 
 
 	void update() override {
 		
-		if (input().down(Gosu::KB_LEFT)) {
+		if (input().down(Gosu::KB_LEFT) && !input_LEFT_up) {
+			input_LEFT_up = true;
+
 			if (Player.s > 1) {
 				Player.s = Player.s - 1;
 				Player.x = Player.x - 150; //Abfrage auf pos. Flanke
 			}
 		}
+		else if (!input().down(Gosu::KB_LEFT)) {
+			input_LEFT_up = false;
+		}
 
-		if (input().down(Gosu::KB_RIGHT)) {
+
+		if (input().down(Gosu::KB_RIGHT) && !input_RIGHT_up) {
+			input_RIGHT_up = true;
+
+			if (Player.s < 5) {
+				Player.s = Player.s + 1;
+				Player.x = Player.x + 150; //Abfrage auf pos. Flanke
+			}
+		}
+		else if (!input().down(Gosu::KB_RIGHT)) {
+			input_RIGHT_up = false;
+		}
+
+		/*if (input().down(Gosu::KB_RIGHT)) {
 			if (Player.s < 5) {
 				Player.s = Player.s + 1;
 				Player.x = Player.x + 150;  //Abfrage auf pos. Flanke
 			}
-		}
+		}*/
 		
 	}
 
