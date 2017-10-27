@@ -55,14 +55,14 @@ public:
 		if (input().down(Gosu::KB_LEFT)) {
 			if (Player.s > 1) {
 				Player.s = Player.s - 1;
-				Player.x = Player.x - 75; //Abfrage auf pos. Flanke
+				Player.x = Player.x - 150; //Abfrage auf pos. Flanke
 			}
 		}
 
 		if (input().down(Gosu::KB_RIGHT)) {
 			if (Player.s < 5) {
 				Player.s = Player.s + 1;
-				Player.x = Player.x + 75;  //Abfrage auf pos. Flanke
+				Player.x = Player.x + 150;  //Abfrage auf pos. Flanke
 			}
 		}
 		
