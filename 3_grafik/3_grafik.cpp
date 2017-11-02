@@ -100,7 +100,9 @@ public:
 	Gosu::Image bild;
 	int16_t x = 375;
 	int16_t y = 0;
-	
+	int16_t z = 1;
+	int16_t zaehler = 0;
+
 	 Element(string n) : bild(n) {}
 
 	 void draw() {
@@ -108,6 +110,15 @@ public:
 			 270,				// Rotationswinkel in Grad
 			 0.5, 0.5		// Position der "Mitte" relativ zu x, y
 		 );
+
+		 if (zaehler % 60 == 0) {
+			 y += z;
+			 if (y % 60 == 0) {
+				 z++;
+			 }
+		 }
+
+		 
 	 }
 };
 
@@ -155,11 +166,9 @@ public:
 		in.taste_r(input().down(Gosu::KB_RIGHT));
 		player.update(in);
 
-		if (zaehler % 60 == 0) {
+		if (zaehler % 200 == 0) {
 			Gegner gegner1("Bilder/LKW.jpg");
 			elem.push_back(make_unique<Gegner>(gegner1));
-
-
 		}
 
 	}
