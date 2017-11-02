@@ -95,13 +95,31 @@ public:
 };
 
 class Element {
-	Gosu::Image Bild;
-	int16_t x = 375;
-	int16_t y = 900;
-
 public:
 
-	Element(string n) : Bild(n) {}
+	Gosu::Image bild;
+	int16_t x = 375;
+	int16_t y = 0;
+	
+	 Element(string n) : bild(n) {}
+
+	 void draw() {
+		 bild.draw_rot(x, y, 0.2,
+			 270,				// Rotationswinkel in Grad
+			 0.5, 0.5		// Position der "Mitte" relativ zu x, y
+		 );
+	 }
+};
+
+class Gegner : public Element {
+public:
+	
+	Gegner(string n) :Element(n) {};
+
+	void update() {
+	
+	}
+
 };
 
 
@@ -123,13 +141,26 @@ public:
 	
 	Player player;
 	Input in;
+	vector<unique_ptr<Element> > elem;
 
+
+	uint32_t zaehler = 0;
+
+	
 
 	void update() override {
+		zaehler++;
 
 		in.taste_l(input().down(Gosu::KB_LEFT));
 		in.taste_r(input().down(Gosu::KB_RIGHT));
 		player.update(in);
+
+		if (zaehler % 60 == 0) {
+			Gegner gegner1("Bilder/LKW.jpg");
+			elem.push_back(make_unique<Gegner>(gegner1));
+
+
+		}
 
 	}
 
@@ -141,7 +172,10 @@ public:
 		);
 
 		player.draw();
-
+		
+		for (auto& x : elem) {
+			x->draw();
+		}
 
 	}
 };
