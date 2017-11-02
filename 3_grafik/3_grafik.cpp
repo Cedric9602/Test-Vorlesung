@@ -7,8 +7,8 @@
 #include <Gosu/AutoLink.hpp>
 
 
-#include "assert.h"
-#include "math.h"
+#include <cassert>
+#include <cmath>
 #include <cstdint>
 #include <vector>
 #include <forward_list>
