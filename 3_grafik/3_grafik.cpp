@@ -25,6 +25,9 @@ using namespace std;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 uint16_t FG_x = 750;	//Fenstergröße x
 uint16_t FG_y = 1000;	//Fenstergröße y
+uint16_t speed = 3;
+int16_t zaehler = 0;
+
 
 
 class Input {
@@ -94,43 +97,31 @@ public:
 	
 };
 
-class Element {
+class Gegner {
 public:
 
 	Gosu::Image bild;
 	int16_t x = 375;
-	int16_t y = 0;
-	int16_t z = 1;
-	int16_t zaehler = 0;
+	int16_t y = -200;
+	bool Kollision = false;
 
-	 Element(string n) : bild(n) {}
+	Gegner(string n, uint16_t s) : bild(n) {
+		x = s;
+	}
+
+
+
 
 	 void draw() {
 		 bild.draw_rot(x, y, 0.2,
 			 270,				// Rotationswinkel in Grad
-			 0.5, 0.5		// Position der "Mitte" relativ zu x, y
+			 0.5, 0.5	// Position der "Mitte" relativ zu x, y
 		 );
 
-		 if (zaehler % 60 == 0) {
-			 y += z;
-			 if (y % 60 == 0) {
-				 z++;
-			 }
-		 }
+		 
 
 		 
 	 }
-};
-
-class Gegner : public Element {
-public:
-	
-	Gegner(string n) :Element(n) {};
-
-	void update() {
-	
-	}
-
 };
 
 
@@ -152,8 +143,8 @@ public:
 	
 	Player player;
 	Input in;
-	vector<unique_ptr<Element> > elem;
-
+	vector<Gegner>  elem;
+	vector<Gegner>  ersatz;
 
 	uint32_t zaehler = 0;
 
@@ -166,10 +157,50 @@ public:
 		in.taste_r(input().down(Gosu::KB_RIGHT));
 		player.update(in);
 
-		if (zaehler % 200 == 0) {
-			Gegner gegner1("Bilder/LKW.jpg");
-			elem.push_back(make_unique<Gegner>(gegner1));
+		if (zaehler % 120 == 0) { //Alle 2s neues Element
+			int16_t Spur = round(Gosu::random(0.0, 4.1)) * 150 + 75;
+			string Auto;
+			uint16_t typ = round(Gosu::random(0.0, 4.6));
+			switch (typ) {
+			case 0: Auto = "Bilder/LKW.jpg"; break;
+			case 1: Auto = "Bilder/Cabrio.jpg"; break;
+			case 2: Auto = "Bilder/gruen.jpg"; break;
+			case 3: Auto = "Bilder/Oldtimer.jpg"; break;
+			case 4: Auto = "Bilder/the_white_one.jpg"; break;
+			default: Auto="Bilder/Panzer.png";
+			}
+
+
+			Gegner gegner1(Auto,Spur);
+			elem.push_back(gegner1);
 		}
+
+		if (zaehler % 300 == 0) {		//Alle 5s speed erhöhen
+			speed += 1;
+		}
+
+		for (Gegner i : elem) {
+			if (zaehler % 1 == 0) {
+				i.y += speed;
+				}
+
+
+			if (i.y > 1200) {
+				i.Kollision = true;
+			}
+
+			if (i.Kollision == false) {
+				ersatz.push_back(i);
+			
+
+			}
+
+
+		}
+		elem.clear();
+		elem = ersatz;
+		ersatz.clear();
+
 
 	}
 
@@ -182,8 +213,8 @@ public:
 
 		player.draw();
 		
-		for (auto& x : elem) {
-			x->draw();
+		for (auto x : elem) {
+			x.draw();
 		}
 
 	}
