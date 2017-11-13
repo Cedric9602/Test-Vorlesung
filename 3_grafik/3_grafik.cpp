@@ -28,7 +28,9 @@ uint16_t FG_y = 1000;	//Fenstergröße y
 uint16_t speed = 3;
 int16_t zaehler = 0;
 int16_t Leben = 3;
-
+int16_t Score = 0;
+Gosu::Font Scoreanzeige = 50;
+bool Start = true;
 
 
 class Input {
@@ -47,9 +49,7 @@ public:
 			left_up = true;
 			left = true;
 		}
-		else if (!druck) {
-			left_up = false;
-		}
+		else if (!druck) { left_up = false; }
 	}
 
 	void taste_r(bool druck) {
@@ -59,9 +59,7 @@ public:
 			right_up = true;
 			right = true;
 		}
-		else if (!druck) {
-			right_up = false;
-		}
+		else if (!druck) { right_up = false; }
 	}
 
 	void taste_s(bool druck) {
@@ -71,11 +69,8 @@ public:
 			space_up = true;
 			space = true;
 		}
-		else if (!druck) {
-			space_up = false;
-		}
+		else if (!druck) { space_up = false; }
 	}
-
 };
 
 class Player {
@@ -88,7 +83,6 @@ public:
 	int16_t y = 900;			// y-Koordinate
 	int16_t Schusszahl = 2;
 
-
 	void draw() {
 		bild.draw_rot(x, y, 0.2,
 			0,				// Rotationswinkel in Grad
@@ -99,19 +93,14 @@ public:
 	void update(Input in) {
 		if (in.left) 
 		{
-			if (x > 75) {
-				x -= 150;
-			}
+			if (x > 75) { x -= 150; }
 		}
 		
 		if (in.right)
 		{
-			if (x < 675) {
-				x += 150;
-			}
+			if (x < 675) { x += 150; }
 		}
 	}
-	
 };
 
 class Gegner {
@@ -127,6 +116,7 @@ public:
 	Gegner(string n, uint16_t s) : bild(n) {
 		x = s;
 	}
+
 	 void draw() {
 		 bild.draw_rot(x, y, 0.1,
 			 270,				// Rotationswinkel in Grad
@@ -154,15 +144,14 @@ public:
 	}
 };
 
+
 class Finish {
 public:
 	Gosu::Image bild;
 	int16_t x = 375;
 	int16_t y = 500;
-	bool Kollision = false;
 
 	Finish() : bild("Bilder/Finish.png") { }
-
 
 	void draw() {
 		bild.draw_rot(x, y, 0.2,
@@ -172,10 +161,29 @@ public:
 	}
 };
 
+
+class Lebensanzeige {
+public:
+
+	Gosu::Image bild;
+	int16_t x = 50;
+	int16_t y = 30;
+	int16_t Nr;
+
+	Lebensanzeige() : bild("Bilder/MAGNUM.png") { }
+
+	void draw() {
+		bild.draw_rot(x, y, 0.3,
+			0,				// Rotationswinkel in Grad
+			0.5, 0.5	// Position der "Mitte" relativ zu x, y
+		);
+	}
+};
+
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------ GameWindow --------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 class GameWindow : public Gosu::Window {
 public:
@@ -195,14 +203,32 @@ public:
 	vector<Gegner>  ersatz;
 
 	vector<Shot> Schüsse;
-	vector<Shot> Schüsse_ersatz;
+	vector<Shot> Schüsse_ersatz;	
 
 	uint32_t zaehler = 0;
+
+	Lebensanzeige Leben3;
+	Lebensanzeige Leben2;
+	Lebensanzeige Leben1;
 
 	
 
 	void update() override {
 		if (Leben > 0) {
+
+			if (Start) {
+				Start = false;
+
+				Leben3.x = 250;
+				Leben3.Nr = 3;
+
+				Leben2.x = 150;
+				Leben2.Nr = 2;
+
+				Leben1.x = 50;
+				Leben1.Nr = 1;
+			} 			
+
 			zaehler++;
 
 			in.taste_l(input().down(Gosu::KB_LEFT));
@@ -251,15 +277,14 @@ public:
 				if (gegner.y > 1200) {
 					gegner.Kollision = true;
 					Leben--;
+					Score -= 2;
 				}
 
 				if ((gegner.x == player.x) && (((player.y >= gegner.y2) && (player.y <= gegner.y1)))) {
 					gegner.Kollision = true;
 					Leben--;
+					Score -= 5;
 				}
-
-
-
 
 
 				for (auto shot = Schüsse.begin(); shot != Schüsse.end();shot++)
@@ -268,6 +293,7 @@ public:
 
 					if (shot->y < -100) {
 						shot->Kollision = true;
+
 						if (player.Schusszahl < 2) {
 							player.Schusszahl++;
 						}
@@ -277,18 +303,18 @@ public:
 						if ((shot->y >= gegner.y2) && (shot->y <= gegner.y1)) {
 							shot->Kollision = true;
 							gegner.Kollision = true;
+							Score += 10;
+
 							if (player.Schusszahl < 2) {
 								player.Schusszahl++;
 							}
 						}
 					}
+
 					if (shot->Kollision == false) {
 						Schüsse_ersatz.push_back(*shot);
 					}
-
 				}
-
-
 
 				if (gegner.Kollision == false) {
 					ersatz.push_back(gegner);
@@ -302,10 +328,21 @@ public:
 			elem.clear();
 			elem = ersatz;
 			ersatz.clear();
-
-
-
 		}
+
+
+		if (Leben3.x < 800) {
+			if (Leben3.Nr > Leben) { Leben3.x += 20; }
+		}
+
+		if (Leben2.x < 800) {
+			if (Leben2.Nr > Leben) { Leben2.x += 20; }
+		}
+
+		if (Leben1.x < 800) {
+			if (Leben1.Nr > Leben) { Leben1.x += 20; }
+		}
+		
 	}
 
 	void draw() override {
@@ -314,8 +351,10 @@ public:
 			0.0, 0.0		// Position der "Mitte" relativ zu x, y
 		);
 
+		Scoreanzeige.draw("Score: ", 500, 50, 1.0, 1.0, 1.0, Gosu::Color::RED);
+		Scoreanzeige.draw(to_string(Score), 650, 50, 1.0, 1.0, 1.0, Gosu::Color::RED);
+
 		player.draw();
-		
 
 		for (auto x : elem) {
 			x.draw();
@@ -325,9 +364,13 @@ public:
 			z.draw();
 		}
 	
-	if (Leben < 1) {
-		Ende.draw();
-	}
+		if (Leben == 0) {
+			Ende.draw();
+		}
+
+		Leben3.draw();
+		Leben2.draw();
+		Leben1.draw();
 	}
 };
 
