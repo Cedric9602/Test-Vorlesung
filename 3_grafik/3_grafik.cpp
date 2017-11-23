@@ -215,6 +215,7 @@ public:
 
 	void update() override {
 		if (Leben > 0) {
+			zaehler++;
 
 			if (Start) {
 				Start = false;
@@ -227,9 +228,7 @@ public:
 
 				Leben1.x = 50;
 				Leben1.Nr = 1;
-			} 			
-
-			zaehler++;
+			}
 
 			in.taste_l(input().down(Gosu::KB_LEFT));
 			in.taste_r(input().down(Gosu::KB_RIGHT));
@@ -250,11 +249,11 @@ public:
 				uint16_t typ = round(Gosu::random(0.0, 4.6));
 
 				switch (typ) {
-				case 0: Auto = "Bilder/LKW.jpg"; break;
-				case 1: Auto = "Bilder/Cabrio.jpg"; break;
-				case 2: Auto = "Bilder/gruen.jpg"; break;
-				case 3: Auto = "Bilder/Oldtimer.jpg"; break;
-				case 4: Auto = "Bilder/the_white_one.jpg"; break;
+				case 0: Auto = "Bilder/LKW2.png"; break;
+				case 1: Auto = "Bilder/Cabrio.png"; break;
+				case 2: Auto = "Bilder/gruen2.png"; break;
+				case 3: Auto = "Bilder/Oldtimer2.png"; break;
+				case 4: Auto = "Bilder/the_white_one2.png"; break;
 				default: Auto = "Bilder/Panzer.png";
 				}
 
